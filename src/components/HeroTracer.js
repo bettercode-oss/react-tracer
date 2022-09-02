@@ -15,7 +15,6 @@ export const HeroTracer = ({
     if (TracingOptions.options.enable && ref && ref.current) {
       const element = ref.current
       const collectEvent = (e) => {
-        console.log('e.target.alt', e.target[targetElementAttribute])
         if (e.target[targetElementAttribute]) {
           const data = {
             id: tracingId,
