@@ -5,3 +5,4 @@ export function init(options) {
 }
 
 export { ButtonTracer } from './components/ButtonTracer'
+export { HeroTracer } from './components/HeroTracer'

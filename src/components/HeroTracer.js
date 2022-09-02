@@ -3,8 +3,9 @@ import PropTypes from 'prop-types'
 import { TracingOptions } from '../tracing.options'
 import TracingService from '../tracing.service'
 
-export const ButtonTracer = ({
+export const HeroTracer = ({
   tracingId,
+  targetElementAttribute,
   additionalInformation,
   children
 }) => {
@@ -13,18 +14,21 @@ export const ButtonTracer = ({
   useEffect(() => {
     if (TracingOptions.options.enable && ref && ref.current) {
       const element = ref.current
-
       const collectEvent = (e) => {
-        const data = {
-          id: tracingId,
-          url: window.location.href,
-          event: 'click'
-        }
+        console.log('e.target.alt', e.target[targetElementAttribute])
+        if (e.target[targetElementAttribute]) {
+          const data = {
+            id: tracingId,
+            url: window.location.href,
+            event: 'click',
+            source: e.target[targetElementAttribute]
+          }
 
-        if (additionalInformation) {
-          data.additionalInformation = additionalInformation
+          if (additionalInformation) {
+            data.additionalInformation = additionalInformation
+          }
+          TracingService.collect(data)
         }
-        TracingService.collect(data)
       }
 
       element.addEventListener('click', collectEvent)
@@ -37,8 +41,9 @@ export const ButtonTracer = ({
   return <span ref={ref}>{children}</span>
 }
 
-ButtonTracer.propTypes = {
+HeroTracer.propTypes = {
   tracingId: PropTypes.number.isRequired,
+  targetElementAttribute: PropTypes.string.isRequired,
   additionalInformation: PropTypes.any,
   children: PropTypes.element.isRequired
 }
